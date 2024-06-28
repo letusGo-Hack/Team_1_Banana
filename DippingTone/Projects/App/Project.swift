@@ -11,7 +11,7 @@ import ProjectTemplatePlugin
 
 let infoPlist: [String: Plist.Value] = InfoPlistValues.generateInfoPlist()
 
-let project = Project.makeAppModule(
+let project = Project.makeAppWidgetModule(
     name: Project.Environment.appName,
     bundleId: .mainBundleID(),
     product: .app,
