@@ -109,7 +109,7 @@ public extension Project {
             entitlements: entitlements,
             scripts: scripts,
             dependencies: dependencies + [
-//              
+               .target(name: "WidgetExtension")
             ],
             buildRules: [
                 
@@ -142,7 +142,52 @@ public extension Project {
         )
       
         
-        let targets = [appTarget, appDevTarget, appTestTarget]
+        let widgetTarget: Target = .target(
+            name: "WidgetExtension",
+            destinations: destinations,
+            product: .appExtension,
+            bundleId: Environment.bundlePrefix + ".WidgetExtension",
+            deploymentTargets: deploymentTarget,
+            infoPlist:  .extendingDefault(with: [
+                "CFBundleDisplayName": "$(PRODUCT_NAME)",
+                "NSExtension": [
+                    "NSExtensionPointIdentifier": "com.apple.widgetkit-extension",
+                ],
+                "CFBundleShortVersionString" : "1.0.0"
+            ]),
+            sources: ["WidgetExtension/Sources/**"],
+            entitlements: entitlements,
+            scripts: scripts,
+            dependencies: dependencies + [
+                .sdk(name: "WidgetKit", type: .framework),
+                .sdk(name: "SwiftUI", type: .framework)
+            ]
+//            name: "WidgetExtension",
+//            destinations: destinations,
+//            platform: platform,
+//            product: .appExtension,
+//            bundleId: Environment.bundlePrefix + ".WidgetExtension",
+//            deploymentTarget: deploymentTarget,
+//            infoPlist: .extendingDefault(with: [
+//                "CFBundleDisplayName": "$(PRODUCT_NAME)",
+//                "NSExtension": [
+//                    "NSExtensionPointIdentifier": "com.apple.widgetkit-extension",
+//                ],
+//                "CFBundleShortVersionString" : "3.0.0"
+//            ]),
+//            sources: ["WidgetExtension/Sources/**"],
+//            resources: ["WidgetExtension/Resources/**"],
+//            entitlements: nil,
+//            scripts: [.widgetRunScripts],
+//            dependencies: [
+//                .feature(implements: .Maps),
+//                .shared(implements: .DesignSystem),
+//                .sdk(name: "WidgetKit", type: .framework),
+//                .sdk(name: "SwiftUI", type: .framework)
+//            ]
+        )
+        
+        let targets = [appTarget, appDevTarget, appTestTarget, widgetTarget]
         
         return Project(
             name: name,

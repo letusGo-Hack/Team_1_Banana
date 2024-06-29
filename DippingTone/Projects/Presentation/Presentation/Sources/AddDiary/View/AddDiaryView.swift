@@ -75,7 +75,9 @@ extension AddDiaryView {
                         .foregroundColor(Color.basicWhite)
                 }
                 .onTapGesture {
-                    store.send(.addItem(addDiaryItem: store.addText))
+                    store.send(.processSentance(text: store.addText))
+                    
+                    store.send(.addItem(addDiaryItem: "\(store.scoreText) \(store.addText) "))
                     
                     Task {
                         await Task.sleep(1)

@@ -18,6 +18,10 @@ public struct Edit {
     public struct State: Equatable {
         public init() {}
         var lisModel: [LIstModel] = []
+        var isEditing: Bool = false
+        var offset: CGFloat = 0
+        var selectModel: LIstModel? = nil
+        var deleteImage: String = "minus.circle"
         var fetchDescriptor: FetchDescriptor<LIstModel> {
             return .init()
         }
@@ -27,6 +31,7 @@ public struct Edit {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case fetchList
+        case deleteItem(model: LIstModel)
     }
     
     @Dependency(LIstModelDatabase.self) var context
@@ -38,6 +43,16 @@ public struct Edit {
                 do {
                     state.lisModel = try context.fetch(state.fetchDescriptor)
                 } catch { }
+                return .none
+                
+            case let .deleteItem(model):
+                do {
+                    try context.delete(model)
+                    state.lisModel.removeAll { $0 == model }
+                    state.lisModel = try context.fetch(state.fetchDescriptor)
+                } catch {
+//                    state.errorMessage = "Failed to delete item."
+                }
                 return .none
                 
             case .binding(_):
