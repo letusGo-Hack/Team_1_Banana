@@ -8,50 +8,54 @@
 import AppIntents
 import SwiftUI
 import WidgetKit
+import Presentation
+import ComposableArchitecture
+import Networkings
+import Model
+import SwiftData
 
 struct widgetControl: ControlWidget {
-    static let kind: String = "io.DippingTone.DippingTone.widget"
-
+    static let kind: String = "io.DippingTone.DippingTone"
+    @Environment(\.modelContext) var context
+    
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(
-            kind: Self.kind,
-            provider: Provider()
-        ) { value in
-            ControlWidgetToggle(
-                "Start Timer",
-                isOn: value,
-                action: StartTimerIntent(),
-                valueLabel: { isRunning in
-                    Label(isRunning ? "On" : "Off", systemImage: "timer")
+        StaticControlConfiguration(kind: Self.kind) {
+            ControlWidgetButton(action: LaunchAppIntent()) {
+                VStack {
+                    Image(systemName: "pencil.line")
+                    Text(fetchRecentlyData()).font(.title)
+//                    Text("").font(.body)
                 }
-            )
+            }
         }
-        .displayName("Timer")
-        .description("A an example control that runs a timer.")
     }
 }
 
 extension widgetControl {
-    struct Provider: ControlValueProvider {
-        var previewValue: Bool {
-            false
-        }
-
-        func currentValue() async throws -> Bool {
-            let isRunning = true // Check if the timer is running
-            return isRunning
+    func fetchRecentlyData() -> String {
+        do {
+            let descriptor = FetchDescriptor<LIstModel>()
+            let temp = try context.fetch(descriptor) 
+            
+            return temp.first!.title!
+        } catch {
+            return ""
         }
     }
 }
 
-struct StartTimerIntent: SetValueIntent {
-    static var title: LocalizedStringResource { "Start a timer" }
-
-    @Parameter(title: "Timer is running")
-    var value: Bool
-
+struct LaunchAppIntent: AppIntent {
+    static var title: LocalizedStringResource { "Open App" }
+    @Environment(\.openURL) var openURL
+    
+    init() {}
+    
     func perform() async throws -> some IntentResult {
-        // Start / stop the timer based on `value`.
+        if let url = URL(string: "myapp://") { //myapp://open
+            DispatchQueue.main.async {
+                openURL(url)
+            }
+        }
         return .result()
     }
 }
