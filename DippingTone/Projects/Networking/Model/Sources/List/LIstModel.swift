@@ -11,9 +11,9 @@ import SwiftUI
 @Model
 public class LIstModel: Identifiable{
  
-    var createTime: Date?
-    var editime: Date?
-    var title: String?
+    public var createTime: Date?
+    public var editime: Date?
+    public var title: String?
         
     public init(
         createTime: Date? = nil,

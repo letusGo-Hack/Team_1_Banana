@@ -1,11 +1,18 @@
 import SwiftUI
+import DesignSystem
 
 public struct ContentView: View {
     public init() {}
 
     public var body: some View {
-        Text("Hello, World!")
-            .padding()
+        ZStack {
+            Color.red
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Text("hi")
+            }
+        }
     }
 }
 

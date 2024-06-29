@@ -1,4 +1,7 @@
 import SwiftUI
+import Presentation
+import ComposableArchitecture
+import Model
 
 @main
 struct DippingToneApp: App {
@@ -11,7 +14,11 @@ struct DippingToneApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ListVIew(store: Store(initialState: ListFeature.State(), reducer: {
+                ListFeature()
+                    ._printChanges()
+            }))
+            .modelContainer(SwiftDataModelConfigurationProvider.shared.container)
         
         }
     }

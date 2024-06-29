@@ -8,8 +8,6 @@
 import Foundation
 import ProjectDescription
 
-import ProjectDescription
-
 public struct InfoPlistValues {
     public static func setUIUserInterfaceStyle(_ value: String) -> [String: Plist.Value] {
         return ["UIUserInterfaceStyle": .string(value)]
@@ -41,10 +39,6 @@ public struct InfoPlistValues {
 
     public static func setCFBundleShortVersionString(_ value: String) -> [String: Plist.Value] {
         return ["CFBundleShortVersionString": .string(value)]
-    }
-
-    public static func setCFBundleURLTypes(_ value: [[String: Any]]) -> [String: Plist.Value] {
-        return ["CFBundleURLTypes": .array(value.map { .dictionary($0.mapValues { .string("\($0)") }) })]
     }
 
     public static func setCFBundleVersion(_ value: String) -> [String: Plist.Value] {
@@ -106,6 +100,19 @@ public struct InfoPlistValues {
         return ["NSSiriUsageDescription": .string(value)]
     }
     
+    public static func setUILaunchScreens() -> [String: Plist.Value] {
+        return [
+            "UILaunchScreens": .dictionary([
+                "UILaunchScreen": .dictionary([
+                    "New item": .dictionary([
+                        "UIImageName": .string(""),
+                        "UILaunchScreenIdentifier": .string("")
+                    ])
+                ])
+            ])
+        ]
+    }
+
     public static func generateInfoPlist() -> [String: Plist.Value] {
         var infoPlist: [String: Plist.Value] = [:]
 
@@ -116,12 +123,13 @@ public struct InfoPlistValues {
         infoPlist.merge(setCFBundleInfoDictionaryVersion("6.0")) { (_, new) in new }
         infoPlist.merge(setCFBundleName("$(PRODUCT_NAME)")) { (_, new) in new }
         infoPlist.merge(setCFBundlePackageType("APPL")) { (_, new) in new }
-        infoPlist.merge(setCFBundleShortVersionString(.appVersion(version: "1.0.0"))) { (_, new) in new }
-        infoPlist.merge(setCFBundleVersion(.appBuildVersion())) { (_, new) in new }
+        infoPlist.merge(setCFBundleShortVersionString("1.0.0")) { (_, new) in new }
+        infoPlist.merge(setCFBundleVersion("1")) { (_, new) in new }
         infoPlist.merge(setLSRequiresIPhoneOS(true)) { (_, new) in new }
         infoPlist.merge(setUIAppFonts(["PretendardVariable.ttf"])) { (_, new) in new }
         infoPlist.merge(setUIApplicationSceneManifest([
             "UIApplicationSupportsMultipleScenes": true,
+            "LSRequiresIPhoneEnvironment": true,
             "UISceneConfigurations": [
                 "UIWindowSceneSessionRoleApplication": [
                     [
@@ -135,8 +143,10 @@ public struct InfoPlistValues {
         infoPlist.merge(setUISupportedInterfaceOrientations(["UIInterfaceOrientationPortrait"])) { (_, new) in new }
         infoPlist.merge(setUIBackgroundModes(["fetch"])) { (_, new) in new }
         infoPlist.merge(setSiriUsageDescription("앱에서 Siri를 사용합니다.")) { (_, new) in new }
-      
+        infoPlist.merge(setUILaunchScreens()) { (_, new) in new }
 
         return infoPlist
     }
 }
+
+

@@ -109,7 +109,7 @@ public extension Project {
             entitlements: entitlements,
             scripts: scripts,
             dependencies: dependencies + [
-                .target(name: "intetnt", condition: .none)
+//              
             ],
             buildRules: [
                 
@@ -140,43 +140,9 @@ public extension Project {
             sources: ["\(name)Tests/Sources/**"],
             dependencies: [.target(name: name)]
         )
+      
         
-        let intetntTarget: Target = .target(
-            name: "intetnt",
-            destinations: destinations,
-            product: .appExtension,
-            bundleId: Environment.bundlePrefix + ".intetnt",
-            deploymentTargets: deploymentTarget,
-            infoPlist: .extendingDefault(with: [
-                "EXAppExtensionAttributes": .dictionary([
-                       "EXExtensionPointIdentifier": "com.apple.appintents-extension"
-                   ])
-            ]),
-            sources: ["intetnt/Sources/**"],
-            resources: ["intetnt/Resourecs/**"],
-            scripts: scripts,
-            dependencies: dependencies
-        )
-        
-        // SiriKit target
-        let siriKitTarget: Target = .target(
-            name: "\(name)SiriKit",
-            destinations: destinations,
-            product: .appExtension,
-            bundleId: "\(bundleId).sirikit",
-            deploymentTargets: deploymentTarget,
-            infoPlist: .extendingDefault(with: [
-                "NSExtension": .dictionary([
-                    "NSExtensionPointIdentifier": "com.apple.siri",
-                    "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).IntentHandler"
-                ])
-            ]),
-            sources: ["SiriKit/Sources/**"],
-            resources: ["SiriKit/Resources/**"],
-            dependencies: []
-        )
-        
-        let targets = [appTarget, appDevTarget, appTestTarget, intetntTarget, siriKitTarget]
+        let targets = [appTarget, appDevTarget, appTestTarget]
         
         return Project(
             name: name,

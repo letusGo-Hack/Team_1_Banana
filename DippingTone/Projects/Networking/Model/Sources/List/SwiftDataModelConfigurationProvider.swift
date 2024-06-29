@@ -6,6 +6,7 @@
 //
 
 import SwiftData
+import ComposableArchitecture
 
 public class SwiftDataModelConfigurationProvider {
     // Singleton instance for configuration
