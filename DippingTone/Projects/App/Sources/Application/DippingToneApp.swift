@@ -14,8 +14,8 @@ struct DippingToneApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ListVIew(store: Store(initialState: ListFeature.State(), reducer: {
-                ListFeature()
+            RootMainVIew(store: Store(initialState: Root.State(), reducer: {
+                Root()
                     ._printChanges()
             }))
             .modelContainer(SwiftDataModelConfigurationProvider.shared.container)

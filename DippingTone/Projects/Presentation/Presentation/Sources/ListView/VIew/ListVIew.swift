@@ -63,6 +63,14 @@ extension ListVIew {
                 .frame(height: UIScreen.screenHeight * 0.02)
             
             HStack {
+                Image(systemName: store.editItemImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .onTapGesture {
+                        store.send(.view(.editDiary))
+                    }
+                
                 Spacer()
                 
                 Image(systemName: store.addItemImage)

@@ -21,6 +21,7 @@ public struct ListFeature {
         var lisModel: [LIstModel] = []
         var errorMessage: String = ""
         var addItemImage: String = "plus"
+        var editItemImage: String = "pencil"
         var fetchDescriptor: FetchDescriptor<LIstModel> {
             return .init()
         }
@@ -41,6 +42,7 @@ public struct ListFeature {
         
         public enum View {
             case addDiary
+            case editDiary
         }
     }
     
@@ -101,11 +103,13 @@ public struct ListFeature {
                     state.errorMessage = "Failed to delete all items."
                 }
                 return .none
+                
             case .fetchList:
                 do {
                     state.lisModel = try context.fetch(state.fetchDescriptor)
                 } catch { }
                 return .none
+                
             case let .updateModel(data):
                 switch data {
                 case .success(let data):
@@ -123,6 +127,8 @@ public struct ListFeature {
                 state.destination = .addDiary(.init())
                 return .none
                 
+            case .view(.editDiary):
+                return .none
             }
         }
         .ifLet(\.$destination, action: \.destination)
