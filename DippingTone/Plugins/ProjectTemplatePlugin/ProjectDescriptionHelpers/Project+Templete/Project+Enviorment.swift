@@ -15,7 +15,7 @@ public extension Project {
         public static let appDevName = "DippingTone-Dev"
         public static let deploymentTarget : ProjectDescription.DeploymentTargets = .iOS("18.0")
         public static let deploymentDestination: ProjectDescription.Destinations = [.iPhone]
-//        public static let organizationTeamId = "N94CS4N6VR"
+        public static let organizationTeamId = "N94CS4N6VR"
         public static let bundlePrefix = "io.DippingTone.DippingTone"
         public static let appVersion = "1.0.0"
         public static let mainBundleId = "io.DippingTone.DippingTone"

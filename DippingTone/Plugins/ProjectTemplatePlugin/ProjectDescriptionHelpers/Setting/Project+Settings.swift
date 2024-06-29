@@ -24,8 +24,8 @@ extension Settings {
             .setCodeSignIdentity()
             .setCodeSignStyle()
             .setVersioningSystem()
-            .setProvisioningProfileSpecifier("match Development io.Aura.AuraTarot")
-//            .setDevelopmentTeam(Project.Environment.organizationTeamId)
+            .setProvisioningProfileSpecifier("match Development io.DippingTone.DippingTone")
+            .setDevelopmentTeam(Project.Environment.organizationTeamId)
             .setSkipInstall(true)
             .setDebugInformationFormat(),
         
@@ -35,21 +35,21 @@ extension Settings {
                 .setCFBundleDisplayName(Project.Environment.appName)
                 .setOtherLdFlags("-ObjC -all_load")
                 .setDebugInformationFormat("non-global")
-                .setProvisioningProfileSpecifier("match Development io.Aura.AuraTarot")
+                .setProvisioningProfileSpecifier("match Development io.DippingTone.DippingTone")
             ),
             .debug(name: "QA", settings: SettingsDictionary()
                 .setProductName(Project.Environment.appDevName)
                 .setCFBundleDisplayName(Project.Environment.appDevName)
                 .setOtherLdFlags("-ObjC -all_load")
                 .setDebugInformationFormat("non-global")
-                .setProvisioningProfileSpecifier("match Development io.Aura.AuraTarot")
+                .setProvisioningProfileSpecifier("match Development io.DippingTone.DippingTone")
             ),
             .release(name: .release, settings: SettingsDictionary()
                 .setProductName(Project.Environment.appName)
                 .setCFBundleDisplayName(Project.Environment.appName)
                 .setOtherLdFlags("-ObjC -all_load")
                 .setDebugInformationFormat("non-global")
-                .setProvisioningProfileSpecifier("match Development io.Aura.AuraTarot")
+                .setProvisioningProfileSpecifier("match Development io.DippingTone.DippingTone")
             )
         ], defaultSettings: .recommended
     )

@@ -97,7 +97,6 @@ public extension Project {
         schemes: [ProjectDescription.Scheme] = []
     ) -> Project {
         
-        
         let appTarget: Target = .target(
             name: name,
             destinations: destinations,
@@ -110,7 +109,10 @@ public extension Project {
             entitlements: entitlements,
             scripts: scripts,
             dependencies: dependencies + [
-                .target(name: "intetnt" , condition: .none)
+                .target(name: "intetnt", condition: .none)
+            ],
+            buildRules: [
+                
             ]
         )
         
@@ -128,7 +130,7 @@ public extension Project {
             dependencies: dependencies
         )
         
-        let appTestTarget : Target = .target(
+        let appTestTarget: Target = .target(
             name: "\(name)Tests",
             destinations: destinations,
             product: .unitTests,
@@ -139,7 +141,7 @@ public extension Project {
             dependencies: [.target(name: name)]
         )
         
-        let intetntTargert: Target = .target(
+        let intetntTarget: Target = .target(
             name: "intetnt",
             destinations: destinations,
             product: .appExtension,
@@ -153,9 +155,28 @@ public extension Project {
             sources: ["intetnt/Sources/**"],
             resources: ["intetnt/Resourecs/**"],
             scripts: scripts,
-            dependencies: dependencies)
+            dependencies: dependencies
+        )
         
-        let targets = [appTarget, appDevTarget, appTestTarget, intetntTargert]
+        // SiriKit target
+        let siriKitTarget: Target = .target(
+            name: "\(name)SiriKit",
+            destinations: destinations,
+            product: .appExtension,
+            bundleId: "\(bundleId).sirikit",
+            deploymentTargets: deploymentTarget,
+            infoPlist: .extendingDefault(with: [
+                "NSExtension": .dictionary([
+                    "NSExtensionPointIdentifier": "com.apple.siri",
+                    "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).IntentHandler"
+                ])
+            ]),
+            sources: ["SiriKit/Sources/**"],
+            resources: ["SiriKit/Resources/**"],
+            dependencies: []
+        )
+        
+        let targets = [appTarget, appDevTarget, appTestTarget, intetntTarget, siriKitTarget]
         
         return Project(
             name: name,
@@ -165,6 +186,7 @@ public extension Project {
             schemes: schemes
         )
     }
+
 }
 
 

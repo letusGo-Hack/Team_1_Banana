@@ -102,7 +102,10 @@ public struct InfoPlistValues {
         return ["UIBackgroundModes": .array(values.map { .string($0) })]
     }
 
-
+    public static func setSiriUsageDescription(_ value: String) -> [String: Plist.Value] {
+        return ["NSSiriUsageDescription": .string(value)]
+    }
+    
     public static func generateInfoPlist() -> [String: Plist.Value] {
         var infoPlist: [String: Plist.Value] = [:]
 
@@ -131,7 +134,8 @@ public struct InfoPlistValues {
         infoPlist.merge(setUIRequiredDeviceCapabilities(["armv7"])) { (_, new) in new }
         infoPlist.merge(setUISupportedInterfaceOrientations(["UIInterfaceOrientationPortrait"])) { (_, new) in new }
         infoPlist.merge(setUIBackgroundModes(["fetch"])) { (_, new) in new }
-
+        infoPlist.merge(setSiriUsageDescription("앱에서 Siri를 사용합니다.")) { (_, new) in new }
+      
 
         return infoPlist
     }
